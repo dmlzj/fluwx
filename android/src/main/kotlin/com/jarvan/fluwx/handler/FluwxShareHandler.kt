@@ -186,7 +186,8 @@ internal class FluwxShareHandler {
                     val suffix  = when {
                         imagePath.isNullOrBlank() -> ".jpeg"
                         imagePath.lastIndexOf(".") == -1 -> ".jpeg"
-                        else -> imagePath.substring(imagePath.lastIndexOf("."))
+                        // else -> imagePath.substring(imagePath.lastIndexOf("."))
+                        else -> ""
                     }
 
                     val file = ShareImageUtil.inputStreamToFile(input,suffix,registrar!!.context())
