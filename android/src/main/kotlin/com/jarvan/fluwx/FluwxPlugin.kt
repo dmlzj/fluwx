@@ -30,6 +30,7 @@ class FluwxPlugin(private val registrar: Registrar, channel: MethodChannel) : Me
         fun registerWith(registrar: Registrar): Unit {
             val channel = MethodChannel(registrar.messenger(), "com.jarvanmo/fluwx")
             WXAPiHandler.setRegistrar(registrar)
+            FluwxRequestHandler.setRegistrar(registrar)
             FluwxResponseHandler.setMethodChannel(channel)
             channel.setMethodCallHandler(FluwxPlugin(registrar, channel))
         }
@@ -104,8 +105,8 @@ class FluwxPlugin(private val registrar: Registrar, channel: MethodChannel) : Me
             return
         }
 
-        if ("openWXApp" == call.method){
-            val isSent = WXAPiHandler.wxApi?.openWXApp()?:false
+        if ("openWXApp" == call.method) {
+            val isSent = WXAPiHandler.wxApi?.openWXApp() ?: false
             result.success(isSent)
             return
         }

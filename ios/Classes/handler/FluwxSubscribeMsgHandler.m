@@ -9,12 +9,12 @@
 #import <WXApiRequestHandler.h>
 
 @implementation FluwxSubscribeMsgHandler {
-    NSObject <FlutterPluginRegistrar> *_registrar;
+    NSObject <FlutterPluginRegistrar> *_fluwxRegistrar;
 }
 - (instancetype)initWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
     self = [super init];
     if (self) {
-        _registrar = registrar;
+        _fluwxRegistrar = registrar;
     }
     return self;
 }
@@ -32,9 +32,9 @@
     req.reserved = reserved;
     req.openID = appId;
 
-    BOOL b = [WXApi sendReq:req];
+    [WXApi sendReq:req completion:^(BOOL done) {result(@(done));}];
 
-    result(@(b));
+   
 }
 
 

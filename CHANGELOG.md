@@ -1,3 +1,40 @@
+## 1.1.4
+
+* 注册微信时会对universal link进行简单校验
+
+## 1.1.3
+
+* Fix #146
+
+## 1.1.2
+
+* Fix #122
+
+## 1.1.1+1
+
+* Android CompileSDKVersion 提升到28
+
+### 1.1.1
+
+* registerWxApi
+
+## 1.1.0
+
+* iOS SDK升级至1.8.6.1，本版本开始支持universal link。
+* Android SDK更换至without-mat:5.4.3
+* Android配置升级
+* 移除MTA选项
+
+
+## 1.0.6
+* Fix #110
+
+## 1.0.5
+* 增加分享内存图片
+
+## 1.0.4
+* 解决Android上打开小程序返回白屏问题（非官方解决方案）
+
 ## 1.0.3
 * 修复一些小问题
 

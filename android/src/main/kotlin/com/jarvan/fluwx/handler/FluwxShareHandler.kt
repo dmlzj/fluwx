@@ -15,11 +15,13 @@
  */
 package com.jarvan.fluwx.handler
 
-import android.util.Log
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.jarvan.fluwx.constant.CallResult
 import com.jarvan.fluwx.constant.WeChatPluginMethods
 import com.jarvan.fluwx.constant.WechatPluginKeys
 import com.jarvan.fluwx.utils.ShareImageUtil
+import com.jarvan.fluwx.utils.ThumbnailCompressUtil
 import com.jarvan.fluwx.utils.WeChatThumbnailUtil
 import com.tencent.mm.opensdk.modelmsg.*
 import io.flutter.plugin.common.MethodCall
@@ -164,37 +166,47 @@ internal class FluwxShareHandler {
         }.await()
     }
 
+    private suspend fun getThumbnailByteArray(imageData: ByteArray): ByteArray {
+        return GlobalScope.async(Dispatchers.Default, CoroutineStart.DEFAULT) {
+            val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+            val bmp = ThumbnailCompressUtil.createScaledBitmapWithRatio(bitmap, WeChatThumbnailUtil.SHARE_IMAGE_THUMB_LENGTH, false)
+            if (bmp == null) {
+                byteArrayOf()
+            } else {
+                ThumbnailCompressUtil.bmpToByteArray(bmp, Bitmap.CompressFormat.PNG, true)
+            }
+        }.await()
+    }
+
     private fun shareImage(call: MethodCall, result: MethodChannel.Result) {
         val imagePath = call.argument<String>(WechatPluginKeys.IMAGE)
-
+        val imageData: ByteArray? = call.argument(WechatPluginKeys.IMAGE_DATA)
 
         GlobalScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) {
             val byteArray: ByteArray? = if (imagePath.isNullOrBlank()) {
-                byteArrayOf()
+                imageData ?: byteArrayOf()
             } else {
                 getImageByteArrayCommon(registrar, imagePath)
             }
 
 
-
-
             val imgObj = if (byteArray != null && byteArray.isNotEmpty()) {
 
-                if (byteArray.size > 512 * 1024){
+                if (byteArray.size > 512 * 1024) {
                     val input = ByteArrayInputStream(byteArray)
 
-                    val suffix  = when {
+                    val suffix = when {
                         imagePath.isNullOrBlank() -> ".jpeg"
                         imagePath.lastIndexOf(".") == -1 -> ".jpeg"
                         // else -> imagePath.substring(imagePath.lastIndexOf("."))
                         else -> ""
                     }
 
-                    val file = ShareImageUtil.inputStreamToFile(input,suffix,registrar!!.context())
+                    val file = ShareImageUtil.inputStreamToFile(input, suffix, registrar!!.context())
                     WXImageObject().apply {
                         setImagePath(file.absolutePath)
                     }
-                }else{
+                } else {
                     WXImageObject(byteArray)
                 }
 
@@ -209,11 +221,15 @@ internal class FluwxShareHandler {
 
             var thumbnail: String? = call.argument(WechatPluginKeys.THUMBNAIL)
 
-            if (thumbnail.isNullOrBlank()) {
-                thumbnail = imagePath
+            val thumbnailData = if (thumbnail.isNullOrBlank() && imageData != null) {
+                getThumbnailByteArray(imageData)
+            } else {
+                if (thumbnail.isNullOrBlank()) {
+                    thumbnail = imagePath
+                }
+                getThumbnailByteArrayCommon(registrar, thumbnail!!)
             }
 
-            val thumbnailData = getThumbnailByteArrayCommon(registrar, thumbnail!!)
 
 //           val thumbnailData =  Util.bmpToByteArray(bitmap,true)
             handleShareImage(imgObj, call, thumbnailData, result)

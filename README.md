@@ -1,4 +1,7 @@
-## Fluwx ![pub package](https://img.shields.io/pub/v/fluwx.svg)
+# Fluwx 
+![pub package](https://img.shields.io/pub/v/fluwx.svg)
+[![Build status](https://img.shields.io/cirrus/github/OpenFlutter/fluwx/master)](https://cirrus-ci.com/github/OpenFlutter/fluwx)
+======
 
 ![logo](./arts/fluwx_logo.png)
 
@@ -8,7 +11,9 @@
 QQ Group：892398530。
 
 ## Before
- Before using`Fluwx`,read this [article](https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1) first.
+ Before using`Fluwx`,read [the official documents](https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1) first.  
+ This is very important because some configurations or details are not listed here.
+
 
 
 ### What does Fluwx support?
@@ -60,12 +65,14 @@ Before using`Fluwx`,you should init `FLuwx`：
 
  ```dart
     import 'package:fluwx/fluwx.dart' as fluwx;
-    fluwx.register(appId:"wxd930ea5d5a258f4f");
+    fluwx.registerWxApi(appId:"wxd930ea5d5a258f4f",universalLink:"https://your.univeral.link.com/placeholder/");
+    
  ```
+Developers must provide `universalLink` if you want register WeChat via fluwx, otherwise, ignore. Incorrect `universalLink` won't pass the register of SDK.
 
 
-
-> NOTE：Although we can register WXApi via Fluwx,but there's still some work you have to do on the particular platform.For example, add a URLSchema for iOS.
+> NOTE：Although we can register WXApi via Fluwx,but there's still some work you have to do on the particular platform.For example, add  *URLSchema, LSApplicationQueriesSchemes or universal link* for iOS. 
+Please read the official documents for details.
 
 ### More
 * [Share](./doc/SHARE.md)
@@ -75,7 +82,7 @@ Before using`Fluwx`,you should init `FLuwx`：
 * [Subscribe Message](./doc/SUBSCRIBE_MESSAGE.md)
 * [Auth By QRCode](./doc/AUTH_BY_QR_CODE.md)
 * [Sign Auto-Deduct](./doc/AUTO_DEDUCT.md)
-* [Obtain Response From WeChat](./doc/RESPONSE.md)
+* [Receive Response Or Callback From WeChat](./doc/RESPONSE.md)
 
 ### Other
 * [Having Questions?](./doc/QUESTIONS.md)

@@ -2,10 +2,8 @@
 
 
 #import "FluwxAuthHandler.h"
-
 #import "FluwxPaymentHandler.h"
 #import "FluwxMethods.h"
-#import "FluwxKeys.h"
 #import "FluwxWXApiHandler.h"
 #import "FluwxShareHandler.h"
 #import "FluwxLaunchMiniProgramHandler.h"
@@ -132,6 +130,11 @@ FluwxAutoDeductHandler *_fluwxAutoDeductHandler;
 // NOTE: 9.0以后使用新API接口
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options {
     return [WXApi handleOpenURL:url delegate:[FluwxResponseHandler defaultManager]];
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray<id<UIUserActivityRestoring>> * __nullable restorableObjects))restorationHandler
+{
+    return [WXApi handleOpenUniversalLink:userActivity delegate:[FluwxResponseHandler defaultManager]];
 }
 
 

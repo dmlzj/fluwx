@@ -1,4 +1,7 @@
-## FLuwx  ![pub package](https://img.shields.io/pub/v/fluwx.svg)
+# Fluwx 
+![pub package](https://img.shields.io/pub/v/fluwx.svg)
+[![Build status](https://img.shields.io/cirrus/github/OpenFlutter/fluwx/master)](https://cirrus-ci.com/github/OpenFlutter/fluwx)
+======
 
 ![logo](./arts/fluwx_logo.png)
 
@@ -9,6 +12,7 @@ QQ群：892398530。
 ## 使用需知
  使用`Fluwx`之前，强烈建议先阅读[微信SDK官方文档](https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1)，
  这有助于你使用`Fluwx`。
+ 这很重要，因为有一些概念以及配置不会体现在本文档中。
 
 ### 目前功能
 * 文本分享。
@@ -57,11 +61,13 @@ dependencies:
 使用`Fluwx`前，需要进行初始化操作：
  ```dart
      import 'package:fluwx/fluwx.dart' as fluwx;
-     fluwx.register(appId:"wxd930ea5d5a258f4f");
+     fluwx.registerWxApi(appId:"wxd930ea5d5a258f4f",universalLink:"https://your.univeral.link.com/placeholder/");
  ```
+如果你想通过fluwx在iOS端注册微信，请务必提供 `universalLink` ，否则无视这句话。乱填`universalLink`会导致iOS端微信SDK无法正常初始化!!!
 
 
-> 注意：尽管可以通过Fluwx完成微信注册，但一些操作依然需要在对应平台进行设置，如配置iOS的URLSchema等。
+
+> 注意：尽管可以通过Fluwx完成微信注册，但一些操作依然需要在对应平台进行设置，如配置iOS的*URLSchema,LSApplicationQueriesSchemes,universal link*等。
 
 ### 传送门
 * [分享](./doc/SHARE_CN.md)。
